@@ -1,0 +1,2 @@
+# git_P
+本次项目是一个基于java的通过kerberous认证的文件共享系统
