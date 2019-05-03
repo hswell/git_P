@@ -9,6 +9,7 @@
  	body{
  	    background-position:center;
         background-repeat:no-repeat;
+        background="E:\web\git_P\esend\WebContent\WEB-INF\lib\me1.jpg"
  	  }
  	
  </style>

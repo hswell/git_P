@@ -14,32 +14,22 @@ import com.mysql.jdbc.Statement;
 public class DBUtil {
    //注册驱动的工具类
 	
-	private static String url = null;
+	private static String url = "jdbc:mysql://localhost:3306/esend?useSSL=false";
 	
-	private static String user = null;
+	private static String user = "root";
 	
-	private static String  password = null;
+	private static String  password = "1998";
 	
-	private static String  dv = null;
+	private static String  dv = "com.mysql.jdbc.Driver";
 	
 	static{
 		
-	   Properties  prop = new Properties();
+	  
 	   
 	   
-	   InputStream in = DBUtil.class.getResourceAsStream("/a.properties");
 	   
-	   try {
-		prop.load(in);
-		
-		url  = prop.getProperty("url");
-		user = prop.getProperty("user");
-		
-		password = prop.getProperty("1998");
-		
-		dv = prop.getProperty("driver");
-		
-		/*System.out.println("url:"+url);*/
+	   
+	
 		
 		
 		//注册驱动
@@ -49,12 +39,9 @@ public class DBUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+	} 
 			
-	}
+	
 	
 	
  

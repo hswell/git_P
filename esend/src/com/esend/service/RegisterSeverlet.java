@@ -10,25 +10,11 @@ import com.esend.Bead.User;
 import com.esend.dao.UserDAO;
 
 @WebServlet("/RegisterSeverlet")
-public class RegisterSeverlet {
-	private static final long serialVersionUID = 1L;
-    
-    /**
-     * @return 
-     * @see HttpServlet#HttpServlet()
-     */
-    public RegisterSeverlet() {
-    	super();
-		// TODO Auto-generated constructor stub
+public class RegisterSeverlet extends HttpServlet {
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 	}
- 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			doPost(request, response);
-     }  
-	
  
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -36,13 +22,12 @@ public class RegisterSeverlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");	
-		request.setCharacterEncoding("utf-8");  
-         int id=Integer.valueOf(request.getParameter("id"));  
-         String name=request.getParameter("name");  
+		request.setCharacterEncoding("utf-8"); 
+		
+         
+         String name=request.getParameter("username");  
          String password=request.getParameter("password");
-         int role=Integer.valueOf(request.getParameter("role"));
          User user=new User();
-         user.setId(id);
          user.setUsername(name);
          user.setPassword(password);
          UserDAO userDAO=new UserDAO(); 
