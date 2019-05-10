@@ -1,9 +1,8 @@
 package zwatch.kerberos.TGS;
 
 
-import zwatch.kerberos.ITGS_Server;
-import zwatch.kerberos.Ticket_V;
-import zwatch.kerberos.Ticket_TGS;
+import zwatch.kerberos.ticket.Ticket_V;
+import zwatch.kerberos.ticket.Ticket_TGS;
 import zwatch.kerberos.packet.TGS2Client;
 import zwatch.kerberos.packet.Client2TGS;
 import zwatch.kerberos.packet.packetTool;

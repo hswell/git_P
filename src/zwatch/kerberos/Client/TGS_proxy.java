@@ -1,8 +1,8 @@
 package zwatch.kerberos.Client;
 
-import zwatch.kerberos.ITGS_Server;
-import zwatch.kerberos.Ticket_V;
-import zwatch.kerberos.Ticket_TGS;
+import zwatch.kerberos.TGS.ITGS_Server;
+import zwatch.kerberos.ticket.Ticket_V;
+import zwatch.kerberos.ticket.Ticket_TGS;
 
 public class TGS_proxy implements ITGS_Server {
     @Override

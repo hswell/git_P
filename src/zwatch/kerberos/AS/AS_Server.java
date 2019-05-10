@@ -1,8 +1,7 @@
 package zwatch.kerberos.AS;
 
 import com.sun.javafx.binding.StringFormatter;
-import zwatch.kerberos.IAS_Server;
-import zwatch.kerberos.Ticket_V;
+import zwatch.kerberos.ticket.Ticket_V;
 import zwatch.kerberos.packet.AS2Client;
 import zwatch.kerberos.packet.Client2AS;
 import zwatch.kerberos.packet.packetTool;

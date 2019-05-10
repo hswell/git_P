@@ -1,5 +1,4 @@
 package zwatch.kerberos.Client;
-import zwatch.kerberos.IClient;
 
 public class Client extends Thread implements IClient {
 
