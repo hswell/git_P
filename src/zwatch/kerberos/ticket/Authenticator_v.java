@@ -3,8 +3,8 @@ import zwatch.kerberos.Utils;
 
 public class Authenticator_v {
     //Authenticatorc = E(Kc_v,[IDc||ADc||TS5])
-    byte[] IDc, ADc;
-    long TS5;
+    public byte[] IDc, ADc;
+    public long TS5;
 
     public Authenticator_v(byte[] IDc, byte[] ADc, long TS5){
         this.ADc=ADc;

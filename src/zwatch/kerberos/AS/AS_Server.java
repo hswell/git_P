@@ -1,11 +1,11 @@
 package zwatch.kerberos.AS;
 
 import com.sun.javafx.binding.StringFormatter;
+import zwatch.kerberos.Utils;
 import zwatch.kerberos.ticket.Ticket_TGS;
 import zwatch.kerberos.ticket.Ticket_V;
 import zwatch.kerberos.packet.AS2Client;
 import zwatch.kerberos.packet.Client2AS;
-import zwatch.kerberos.packet.packetTool;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -79,18 +79,18 @@ class AS_Server_n extends Thread implements IAS_Server {
         try {
             reader = new InputStreamReader(socket.getInputStream());
             writer = new OutputStreamWriter(socket.getOutputStream());
-
-            String clientRowData=packetTool.FromReader(reader);
-            logger.log(Level.INFO , "server recv rowdata: " + clientRowData);
-
-            Client2AS cAs=Client2AS.unpack(clientRowData);
-            String pass=getPassword(cAs.Uid);
-            logger.log(Level.INFO , "the user: "+cAs.Uid+" request ticket");
-
-            AS2Client as2Client=new AS2Client();
-            as2Client.Uid=cAs.Uid;
-            Ticket_TGS ticket_tgs=new Ticket_TGS();
-            String sendPack=as2Client.CryptPack(pass);
+            String C_AS_RowData= Utils.FromReader(reader);
+            logger.log(Level.INFO , "server recv rowdata: " + C_AS_RowData);
+            Client2AS cAs=Client2AS.unPack(C_AS_RowData);
+            String user=new String(cAs.IDc);
+            String pass=getPassword(user);
+            logger.log(Level.INFO , "the user: "+user+" request ticket");
+            long TS=Utils.TimeStamp();
+            byte[] ADc=null;
+            byte[] Kc_tgs=Utils.RandomDesKey();
+            Ticket_TGS ticket_tgs=new Ticket_TGS(cAs.IDc, ADc, cAs.IDtgs, TS);
+            AS2Client as2Client=new AS2Client(Kc_tgs, cAs.IDtgs, ticket_tgs.cryptPack().getBytes() ,TS);
+            String sendPack=as2Client.cryptPack(pass);
             writer.write(sendPack);
             writer.flush();
             reader.close();

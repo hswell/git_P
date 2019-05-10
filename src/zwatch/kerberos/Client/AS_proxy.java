@@ -1,11 +1,9 @@
 package zwatch.kerberos.Client;
 
-import zwatch.kerberos.AS.IAS_Server;
 import zwatch.kerberos.IServerConfig;
-import zwatch.kerberos.ticket.Ticket_V;
 import zwatch.kerberos.packet.AS2Client;
 import zwatch.kerberos.packet.Client2AS;
-import zwatch.kerberos.packet.packetTool;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.logging.Level;

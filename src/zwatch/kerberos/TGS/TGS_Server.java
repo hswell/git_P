@@ -5,7 +5,6 @@ import zwatch.kerberos.ticket.Ticket_V;
 import zwatch.kerberos.ticket.Ticket_TGS;
 import zwatch.kerberos.packet.TGS2Client;
 import zwatch.kerberos.packet.Client2TGS;
-import zwatch.kerberos.packet.packetTool;
 
 import java.io.*;
 import java.net.ServerSocket;
