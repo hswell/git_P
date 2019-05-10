@@ -1,5 +1,7 @@
 package zwatch.kerberos.Client;
 
+import zwatch.kerberos.packet.Client2TGS;
+
 public class Client extends Thread implements IClient {
 
     @Override
@@ -8,7 +10,13 @@ public class Client extends Thread implements IClient {
         AS_proxy as_proxy= new AS_proxy();
         as_proxy.run();
         as_proxy.Login("20161001742");
-        as_proxy.getTicket("20161001");
+        String ticket_as= as_proxy.getRowTicket("20161001");;
+        TGS_proxy tgs_proxy=new TGS_proxy();
+        tgs_proxy.Login(ticket_as);
+        String ticket_tgs= tgs_proxy.getRowTicket("20161001");
+
+        //TODO 登录v服务器
+
     }
 
     @Override

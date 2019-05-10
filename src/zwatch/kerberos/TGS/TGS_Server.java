@@ -89,9 +89,13 @@ class TGS_Server_n extends Thread implements ITGS_Server{
             String clientRowData= packetTool.FromReader(reader);
             logger.log(Level.INFO , "server recv rowdata: " + clientRowData);
             Client2TGS cTGS = Client2TGS.unpack(clientRowData);
-            //String pass=getPassword(cAs.Uid);
+            if(Verification(cTGS)){
+
+            }else{
+                logger.log(Level.INFO , "Verification error: " + clientRowData);
+                throw new IOException("Verification error");
+            }
             String pass = getPassword(new Ticket_TGS());
-            //logger.log(Level.INFO , "the user: "+cTGS.Uid+" request ticket");
             TGS2Client tgs2Client=new TGS2Client();
 
             String sendPack=tgs2Client.CryptPack(pass);
@@ -111,6 +115,10 @@ class TGS_Server_n extends Thread implements ITGS_Server{
 
     String getPassword(Ticket_TGS ticket_tgs){
         return "20161001742";
+    }
+
+    boolean Verification(Client2TGS client2TGS){
+        return true;
     }
 
     @Override
