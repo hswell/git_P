@@ -8,7 +8,7 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.util.logging.Logger;
 
-public class des {
+public class DES {
     static Logger logger= Logger.getLogger("Cipher.log");
     static SecretKeyFactory keyFactory = null;
     static Cipher cipher = null;

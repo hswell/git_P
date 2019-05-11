@@ -1,22 +1,18 @@
 package zwatch.kerberos.Client;
 
-import zwatch.kerberos.ITGS_Server;
-import zwatch.kerberos.Ticket_V;
-import zwatch.kerberos.Ticket_TGS;
+import zwatch.kerberos.IServerConfig;
 
-public class TGS_proxy implements ITGS_Server {
-    @Override
+public class TGS_proxy implements IServerConfig {
+
     public void run() {
 
     }
 
-    @Override
-    public void Login(Ticket_TGS ticket_as) {
+    public void Login(String ticket) {
 
     }
 
-    @Override
-    public Ticket_V getTicket(String pass) {
+    public String getRowTicket(String pass) {
         return null;
     }
 

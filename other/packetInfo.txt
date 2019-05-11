@@ -1,2 +1,17 @@
 qzG3p4Aul8R4R0EnHvnNoBJdLJzvxTC7TXGis56ESSR+T7je8isyzXrKBl5/erAF1kcWQhhpnXg4Gc7ZZSQUfsOnysupA42NYvIipja7YgBfJ6iL20JjdY28vHZspR/xTEgZRnbfeSSdj9P3ZhzF1fz1zSot8X6DHeYvsyIQONI=
 qzG3p4Aul8R4R0EnHvnNoBJdLJzvxTC7TXGis56ESSR+T7je8isyzXrKBl5/erAF1kcWQhhpnXi1WQNOxeVUVEfbcR1tN4DKYvIipja7YgBfJ6iL20JjdY28vHZspR/xhJxqB9DRj3udj9P3ZhzF1fz1zSot8X6DHeYvsyIQONI=
+（a）服务认证交换：获得票据许可票据
+    (1) C →AS : IDC|| IDtgs|| TS1
+    (2) AS →C : E(Kc,[Kc,tgs|| IDtgs|| TS2|| Lifetime2|| Tickettgs])
+        Tickettgs= E(Ktgs, [Kc,tgs|| IDC|| ADC|| IDtgs|| TS2|| Lifetime2])
+（b）服务器授权票据交换：获得服务许可票据
+    (3) C →TGS : IDV|| Tickettgs|| Authenticatorc
+    (4) TGS →C : E(Kc,tgs[Kc,v|| IDV|| TS4|| Ticketv])
+        Tickettgs= E(Ktgs,[Kc,tgs|| IDC|| ADC|| IDtgs|| TS2|| Lifetime2])
+        Ticketv= E(KV, [Kc,v||IDC||ADC|| IDv||TS4||Lifetime4])
+        Authenticatorc = EKc,tgs[IDc||ADc||TS3]
+（c）客户/服务器认证交换：获得服务
+    (5) C →V : Ticketv || Authenticatorc
+    (6) V →C : E(Kc,v[TS5+1])  (相互认证)
+        Ticketv = E(KV,[Kc,v||IDc||ADc||IDv||TS4||Lifetime4])
+        Authenticatorc = EKc,v[IDc||ADc||TS5]

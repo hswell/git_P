@@ -1,8 +1,8 @@
 package zwatch.kerberos.AS;
 
 import com.sun.javafx.binding.StringFormatter;
-import zwatch.kerberos.IAS_Server;
-import zwatch.kerberos.Ticket_V;
+import zwatch.kerberos.ticket.Ticket_TGS;
+import zwatch.kerberos.ticket.Ticket_V;
 import zwatch.kerberos.packet.AS2Client;
 import zwatch.kerberos.packet.Client2AS;
 import zwatch.kerberos.packet.packetTool;
@@ -28,7 +28,7 @@ public class AS_Server extends Thread implements IAS_Server {
         log.log(Level.INFO,"服务器启动");
         try {
             server = new ServerSocket(port);
-        } catch (IOException e) {
+        }catch (IOException e) {
             log.log(Level.SEVERE, e.getLocalizedMessage());
             hasError=true;
         }
@@ -39,7 +39,7 @@ public class AS_Server extends Thread implements IAS_Server {
                 log.log(Level.INFO, "来自 "+socket.getInetAddress().getHostName()+":"+socket.getPort()+" 连接到服务器");
                 a.socket=socket;
                 a.start();
-            } catch (IOException e) {
+            }catch (IOException e) {
                 e.printStackTrace();
                 hasError=true;
             }
@@ -82,20 +82,20 @@ class AS_Server_n extends Thread implements IAS_Server {
 
             String clientRowData=packetTool.FromReader(reader);
             logger.log(Level.INFO , "server recv rowdata: " + clientRowData);
+
             Client2AS cAs=Client2AS.unpack(clientRowData);
-            //String pass=getPassword(cAs.Uid);
-            String pass=getPassword(password);
+            String pass=getPassword(cAs.Uid);
             logger.log(Level.INFO , "the user: "+cAs.Uid+" request ticket");
+
             AS2Client as2Client=new AS2Client();
             as2Client.Uid=cAs.Uid;
+            Ticket_TGS ticket_tgs=new Ticket_TGS();
             String sendPack=as2Client.CryptPack(pass);
             writer.write(sendPack);
             writer.flush();
-
             reader.close();
             writer.close();
             socket.close();
-
         } catch (IOException e) {
             logger.log(Level.SEVERE, e.getLocalizedMessage());
         }
