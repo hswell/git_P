@@ -24,7 +24,6 @@ public class AS_proxy implements IServerConfig {
 
 
     public void run() {
-
         try {
             client = new Socket(host, port);
         } catch (IOException e) {
@@ -68,7 +67,7 @@ public class AS_proxy implements IServerConfig {
     }
 
 
-    public String getRowTicket(String pass) {
+    public String getRowTicket(String pass) throws Exception {
         if(RowTicket != null){
             return RowTicket;
         }else{

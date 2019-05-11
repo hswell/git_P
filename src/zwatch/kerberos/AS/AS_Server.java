@@ -1,6 +1,7 @@
 package zwatch.kerberos.AS;
 
 import com.sun.javafx.binding.StringFormatter;
+import zwatch.kerberos.IServerConfig;
 import zwatch.kerberos.Utils;
 import zwatch.kerberos.ticket.Ticket_TGS;
 import zwatch.kerberos.ticket.Ticket_V;
@@ -68,7 +69,7 @@ public class AS_Server extends Thread implements IAS_Server {
     }
 }
 
-class AS_Server_n extends Thread implements IAS_Server {
+class AS_Server_n extends Thread implements IServerConfig {
     Socket socket = null;
     private static Logger logger=Logger.getLogger("AS_Server_n.log");
     private static String password="20161001";
@@ -83,32 +84,29 @@ class AS_Server_n extends Thread implements IAS_Server {
             logger.log(Level.INFO , "server recv rowdata: " + C_AS_RowData);
             Client2AS cAs=Client2AS.unPack(C_AS_RowData);
             String user=new String(cAs.IDc);
-            String pass=getPassword(user);
-            logger.log(Level.INFO , "the user: "+user+" request ticket");
-            long TS=Utils.TimeStamp();
-            byte[] ADc=null;
-            byte[] Kc_tgs=Utils.RandomDesKey();
-            Ticket_TGS ticket_tgs=new Ticket_TGS(cAs.IDc, ADc, cAs.IDtgs, TS);
-            AS2Client as2Client=new AS2Client(Kc_tgs, cAs.IDtgs, ticket_tgs.cryptPack().getBytes() ,TS);
-            String sendPack=as2Client.cryptPack(pass);
-            writer.write(sendPack);
-            writer.flush();
+            if(FindUser(user)){
+                String pass = getPassword(user);
+
+                logger.log(Level.INFO , "the user: "+user+" request ticket");
+                long TS=Utils.TimeStamp();
+                byte[] ADc= socket.getInetAddress().toString().getBytes();;
+                byte[] Kc_tgs=Utils.RandomDesKey();
+                Ticket_TGS ticket_tgs=new Ticket_TGS(cAs.IDc, ADc, cAs.IDtgs, TS);
+                AS2Client as2Client=new AS2Client(Kc_tgs, cAs.IDtgs, ticket_tgs.cryptPack().getBytes() ,TS);
+                String sendPack=as2Client.cryptPack(pass);
+                writer.write(sendPack);
+                writer.flush();
+
+            }else{
+                logger.log(Level.INFO , "the user: "+user+" can't found");
+            }
+
             reader.close();
             writer.close();
             socket.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.log(Level.SEVERE, e.getLocalizedMessage());
         }
-    }
-
-    @Override
-    public void Login(String uid) {
-
-    }
-
-    @Override
-    public Ticket_V getTicket(String pass) {
-        return null;
     }
 
     @Override
@@ -124,4 +122,8 @@ class AS_Server_n extends Thread implements IAS_Server {
     private String getPassword(String uid){
         return password;
     };
+
+    boolean FindUser(String user){
+        return true;
+    }
 }

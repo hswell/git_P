@@ -86,36 +86,32 @@ class TGS_Server_n extends Thread implements ITGS_Server{
             reader = new InputStreamReader(socket.getInputStream());
             writer = new OutputStreamWriter(socket.getOutputStream());
 
-            String clientRowData= Utils.FromReader(reader);
-            logger.log(Level.INFO , "server recv rowdata: " + clientRowData);
-            Client2TGS cTGS = Client2TGS.unPack(clientRowData);
-            //cTGS.IDv;
+            String C_TGS_RowData= Utils.FromReader(reader);
+            logger.log(Level.INFO , "server recv rowdata: " + C_TGS_RowData);
+            Client2TGS cTGS = Client2TGS.unPack(C_TGS_RowData);
 
             Ticket_TGS ticket_tgs=Ticket_TGS.UnCryptPack(cTGS.Ticket_tgs, password);
-            Authenticator_tgs auth=Authenticator_tgs.UnPack(cTGS.Authenticator_tgs, ticket_tgs.Kc_tgs);
+            Authenticator_tgs auth=Authenticator_tgs.unCryptPack(cTGS.Authenticator_tgs, ticket_tgs.Kc_tgs);
             if(Verification(ticket_tgs, auth)){
                 byte[] Kc_v=Utils.RandomDesKey();
                 long TS=Utils.TimeStamp();
-                Ticket_V ticket_v = new Ticket_V(Kc_v, ticket_tgs.IDc,null ,cTGS.IDv,TS);
+                byte[] ADc= socket.getInetAddress().toString().getBytes();;
+                Ticket_V ticket_v = new Ticket_V(Kc_v, ticket_tgs.IDc,ADc ,cTGS.IDv,TS);
                 TGS2Client tgs2Client = new TGS2Client(Kc_v, cTGS.IDv, ticket_v.CryptPack(v_password),TS);
                 String sendPack=tgs2Client.cryptPack(ticket_tgs.Kc_tgs);
                 writer.write(sendPack);
                 writer.flush();
             }else{
-                logger.log(Level.INFO , "Verification error: " + clientRowData);
+                logger.log(Level.INFO , "Verification error: " + C_TGS_RowData);
                 throw new IOException("Verification error");
             }
-
 
             reader.close();
             writer.close();
             socket.close();
-
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.log(Level.SEVERE, e.getLocalizedMessage());
         }
-
-
     }
 
     String getPassword(Ticket_TGS ticket_tgs){
