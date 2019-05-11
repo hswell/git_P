@@ -1,5 +1,6 @@
 package zwatch.kerberos.Client;
 
+import com.google.gson.stream.JsonReader;
 import zwatch.kerberos.IServerConfig;
 import zwatch.kerberos.Utils;
 import zwatch.kerberos.packet.AS2Client;
@@ -24,6 +25,7 @@ public class AS_proxy implements IServerConfig {
 
 
     public void run() {
+        LoadConfig("AS_proxy.config");
         try {
             client = new Socket(host, port);
         } catch (IOException e) {
@@ -90,7 +92,30 @@ public class AS_proxy implements IServerConfig {
 
     @Override
     public void LoadConfig(String filename) {
+        host = "127.0.0.1";
+        port = 9999;
 
+        try {
+            JsonReader jsonReader=new JsonReader(new FileReader(filename));
+            jsonReader.beginObject();
+            while (jsonReader.hasNext()){
+                switch (jsonReader.nextName()){
+                    case "ip":{
+                        host=jsonReader.nextString();
+                        break;
+                    }
+                    case "port":{
+                        port=jsonReader.nextInt();
+                        break;
+                    }
+                }
+            }
+            jsonReader.endObject();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -25,7 +25,7 @@ public class AS_Server extends Thread implements IAS_Server {
     public void run() {
         super.run();
         boolean hasError=false;
-
+        LoadConfig("AS_Server.config");
         log.log(Level.INFO,"服务器启动");
         try {
             server = new ServerSocket(port);
