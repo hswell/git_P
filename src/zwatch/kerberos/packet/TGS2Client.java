@@ -1,20 +1,16 @@
 package zwatch.kerberos.packet;
 
 import com.google.gson.Gson;
-import com.sun.javafx.binding.StringFormatter;
-import zwatch.kerberos.crypt.des;
+import zwatch.kerberos.crypt.DES;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import java.lang.reflect.GenericSignatureFormatError;
-import java.net.ServerSocket;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Logger;
 
 public class TGS2Client {
     public String Uid="";
@@ -31,7 +27,7 @@ public class TGS2Client {
         String row=pack();
         String ret=null;
         try {
-            ret=des.decrypt(row.getBytes(), pass).toString();
+            ret= DES.decrypt(row.getBytes(), pass).toString();
         } catch (InvalidKeyException | InvalidKeySpecException | BadPaddingException | IllegalBlockSizeException | NoSuchAlgorithmException | NoSuchPaddingException e) {
             e.printStackTrace();
         }

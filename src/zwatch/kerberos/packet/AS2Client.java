@@ -3,7 +3,7 @@ package zwatch.kerberos.packet;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import zwatch.kerberos.crypt.des;
+import zwatch.kerberos.crypt.DES;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -16,11 +16,14 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
-import java.util.logging.Level;
 import java.util.logging.Logger;
+/*
+    Realm_c||IDc||Ticket_tgs||E(Kc, [Kc_tgs||Times||Nonce1||Realm_tgs||IDtgs])
+    Ticket_tgs= E(Ktgs,[Kc,tgs|| IDc|| ADc|| IDtgs|| TS2|| Lifetime2])
+ */
+
 
 public class AS2Client {
 
@@ -41,7 +44,7 @@ public class AS2Client {
         String data=pack();
         byte[] CryptData= new byte[0];
         try {
-            CryptData = des.decrypt(data.getBytes() ,pass);
+            CryptData = DES.decrypt(data.getBytes() ,pass);
         } catch (NoSuchPaddingException | NoSuchAlgorithmException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException | InvalidKeySpecException e) {
             e.printStackTrace();
         }
@@ -72,7 +75,7 @@ public class AS2Client {
                 byte[] DcryptData= new byte[0];
                 try {
                     String rowD=reader.nextString();
-                    DcryptData = des.decrypt(Base64.getDecoder().decode(rowD.getBytes()) ,pass, false);
+                    DcryptData = DES.decrypt(Base64.getDecoder().decode(rowD.getBytes()) ,pass, false);
                     String str= new String(DcryptData);
                     reader=new JsonReader(new StringReader(str));
                 } catch (Exception e) {

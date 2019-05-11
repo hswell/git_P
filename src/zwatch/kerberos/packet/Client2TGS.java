@@ -6,10 +6,10 @@ import com.google.gson.stream.JsonReader;
 import java.io.StringReader;
 
 public class Client2TGS {
-    String UID="";
-    String VID="";
-    String RowTicket_tgs="";
-    String Auth="";
+    public String UID="";
+    public String VID="";
+    public String RowTicket_tgs="";
+    public String Auth="";
 
     static Gson gson = new Gson();
     public String pack(){

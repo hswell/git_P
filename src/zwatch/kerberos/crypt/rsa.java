@@ -7,7 +7,7 @@ import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
-public class rsa {
+public class RSA {
     static Cipher cipher=null;
 
     static int MAX_ENCRYPT_ONCE=117;
