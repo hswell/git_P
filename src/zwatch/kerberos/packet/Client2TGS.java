@@ -22,7 +22,7 @@ public class Client2TGS {
     }
 
     public String pack(){
-        return Utils.gson.toJson(this, Client2AS.class);
+        return Utils.gson.toJson(this, Client2TGS.class);
     };
 
     public static Client2TGS unPack(String rowData){

@@ -39,7 +39,12 @@ public class TGS2Client {
         return Utils.gson.toJson(this, TGS2Client.class);
     }
 
-    public TGS2Client UnPack(String rowData){
+    public static TGS2Client UnPack(String rowData){
         return Utils.gson.fromJson(rowData, TGS2Client.class);
+    }
+
+    public static TGS2Client UnCryptPack(String rowData, String Kc_tgs) throws Exception {
+        String row=Utils.decrypt_des(rowData, Kc_tgs);
+        return UnPack(row);
     }
 }
