@@ -1,11 +1,12 @@
 package zwatch.kerberos.Client;
 
-import zwatch.kerberos.AS.IAS_Server;
+import com.google.gson.stream.JsonReader;
 import zwatch.kerberos.IServerConfig;
-import zwatch.kerberos.ticket.Ticket_V;
+import zwatch.kerberos.Utils;
 import zwatch.kerberos.packet.AS2Client;
 import zwatch.kerberos.packet.Client2AS;
-import zwatch.kerberos.packet.packetTool;
+
+import javax.rmi.CORBA.Util;
 import java.io.*;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -24,7 +25,7 @@ public class AS_proxy implements IServerConfig {
 
 
     public void run() {
-
+        LoadConfig("AS_proxy.config");
         try {
             client = new Socket(host, port);
         } catch (IOException e) {
@@ -40,8 +41,9 @@ public class AS_proxy implements IServerConfig {
         }
 
         Writer writer = null;
-        client2AS=new Client2AS();
-        client2AS.Uid=uid;
+        byte[] IDc="20161001742".getBytes();
+        byte[] IDtgs="01".getBytes();
+        client2AS=new Client2AS(IDc,IDtgs, Utils.TimeStamp());
 
         try {
             assert client != null;
@@ -54,7 +56,7 @@ public class AS_proxy implements IServerConfig {
             writer.flush();
             logger.log(Level.INFO , "client send over: ");
             //AS2Client as2Client=AS2Client.FromReader(reader);
-            rowData=packetTool.FromReader(reader);
+            rowData=Utils.FromReader(reader);
             logger.log(Level.INFO , "client recv: "+rowData);
 
             reader.close();
@@ -67,16 +69,19 @@ public class AS_proxy implements IServerConfig {
     }
 
 
-    public String getRowTicket(String pass) {
-        if(as2Client != null){
-            return as2Client.RowTicketTgs;
+    public String getRowTicket(String pass) throws Exception {
+        if(RowTicket != null){
+            return RowTicket;
         }else{
-            as2Client=AS2Client.unpack(rowData,"20161001");
-            logger.log(Level.INFO, as2Client.pack());
-            System.out.println("完整包："+rowData);
-            System.out.println("用户id"+as2Client.Uid);
-            System.out.println("返回的时间戳"+as2Client.TimeStamp);
-            return as2Client.RowTicketTgs;
+            if(as2Client == null){
+                as2Client=AS2Client.unCryptPack(rowData,"20161001");
+                logger.log(Level.INFO, as2Client.pack());
+                System.out.println("完整包："+rowData);
+                System.out.println("Tgs id"+as2Client.IDtgs);
+                System.out.println("返回的时间戳"+as2Client.TS2);
+            }
+            RowTicket = new String(as2Client.Ticket_tgs);
+            return RowTicket;
         }
     }
 
@@ -87,7 +92,30 @@ public class AS_proxy implements IServerConfig {
 
     @Override
     public void LoadConfig(String filename) {
+        host = "127.0.0.1";
+        port = 9999;
 
+        try {
+            JsonReader jsonReader=new JsonReader(new FileReader(filename));
+            jsonReader.beginObject();
+            while (jsonReader.hasNext()){
+                switch (jsonReader.nextName()){
+                    case "ip":{
+                        host=jsonReader.nextString();
+                        break;
+                    }
+                    case "port":{
+                        port=jsonReader.nextInt();
+                        break;
+                    }
+                }
+            }
+            jsonReader.endObject();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

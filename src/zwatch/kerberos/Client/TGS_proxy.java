@@ -6,6 +6,8 @@ public class TGS_proxy implements IServerConfig {
 
     public void run() {
 
+
+
     }
 
     public void Login(String ticket) {
