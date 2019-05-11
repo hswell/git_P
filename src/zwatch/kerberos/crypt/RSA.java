@@ -58,12 +58,12 @@ public class RSA {
         ois.close(); 		//使用公钥加密
         return prikey;
     }
+
     public static  Key GetPubKey(String file) throws IOException, ClassNotFoundException {
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file+".pub"));
         RSAPublicKey pubkey = (RSAPublicKey) ois.readObject();
         ois.close();
         return pubkey;
     }
-
 
 }
