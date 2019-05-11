@@ -1,6 +1,7 @@
 package zwatch.kerberos.Client;
 
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import zwatch.kerberos.IServerConfig;
 import zwatch.kerberos.Utils;
 import zwatch.kerberos.packet.AS2Client;
@@ -67,7 +68,6 @@ public class AS_proxy implements IServerConfig {
 
     }
 
-
     public String getRowTicket(String pass) throws Exception {
         if(RowTicket != null){
             return RowTicket;
@@ -86,7 +86,22 @@ public class AS_proxy implements IServerConfig {
 
     @Override
     public void SaveConfig(String filename) {
-
+        File file = new File(filename);
+        if (file.exists()) {
+            file.delete();
+        }
+        try {
+            file.createNewFile();
+            FileWriter fileWriter = new FileWriter(file);
+            JsonWriter jsonWriter = new JsonWriter(fileWriter);
+            jsonWriter.beginObject();
+            jsonWriter.name("ip").value(host);
+            jsonWriter.name("port").value(port);
+            jsonWriter.endObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return;
     }
 
     @Override
