@@ -23,7 +23,6 @@ public class AS_proxy implements IServerConfig {
     static int port = 9999;
     static Logger logger=Logger.getLogger("ClientLog.log");
 
-
     public void run() {
         LoadConfig("AS_proxy.config");
         try {
@@ -96,7 +95,22 @@ public class AS_proxy implements IServerConfig {
         port = 9999;
 
         try {
-            JsonReader jsonReader=new JsonReader(new FileReader(filename));
+            File file=new File(filename);
+            if(!file.exists()){
+                file.createNewFile();
+                FileWriter fileWriter=new FileWriter(file);
+                fileWriter.write("{\"port\":9999, \"ip\":\"172.0.0.1\"}");
+                fileWriter.close();
+                return ;
+            }
+            FileReader fileReader=null;
+            try{
+                fileReader=new FileReader(filename);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+
+            }
+            JsonReader jsonReader=new JsonReader(fileReader);
             jsonReader.beginObject();
             while (jsonReader.hasNext()){
                 switch (jsonReader.nextName()){
@@ -111,13 +125,8 @@ public class AS_proxy implements IServerConfig {
                 }
             }
             jsonReader.endObject();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-
-
 }
