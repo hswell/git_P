@@ -35,11 +35,8 @@ public class Ticket_TGS {
 
     public static Ticket_TGS UnCryptPack(String rowData, String pass){
         byte[] row =Utils.base64de.decode(rowData);
-        //
         return UnPack(new String(row));
     }
-
-
 }
 
 

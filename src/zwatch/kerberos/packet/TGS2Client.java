@@ -31,15 +31,8 @@ public class TGS2Client {
         this(Kc_v, IDv, Ticket_v, TS4, Utils.Default_Lifetime);
     }
 
-    public String cryptPack(String pass){
-        String row=pack();
-        String ret=null;
-        try {
-            ret= DES.decrypt(row.getBytes(), pass).toString();
-        } catch (InvalidKeyException | InvalidKeySpecException | BadPaddingException | IllegalBlockSizeException | NoSuchAlgorithmException | NoSuchPaddingException e) {
-            e.printStackTrace();
-        }
-        return ret;
+    public String cryptPack(String pass) throws Exception {
+        return Utils.encrypt_des(pack(), pass);
     }
 
     public String pack(){

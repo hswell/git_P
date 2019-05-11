@@ -1,5 +1,6 @@
 package zwatch.kerberos.ticket;
 
+import com.sun.rowset.internal.Row;
 import com.sun.xml.internal.bind.v2.model.core.ID;
 import zwatch.kerberos.Utils;
 
@@ -25,17 +26,18 @@ public class Ticket_V {
         return Utils.gson.toJson(this, Ticket_V.class);
     };
 
-    public String CryptPack(String KV){
-        return null;
+    public String CryptPack(String KV) throws Exception {
+        String ret=Pack();
+        return Utils.encrypt_des(ret, KV);
     };
 
     public Ticket_V UnPack(String RowData){
         return Utils.gson.fromJson(RowData, Ticket_V.class);
     };
 
-    public Ticket_V UnCryptPack(String RowData, String pass){
-        //TODO
-        return Utils.gson.fromJson(RowData, Ticket_V.class);
+    public Ticket_V UnCryptPack(String RowData, String pass) throws Exception {
+        RowData=Utils.decrypt_des(RowData, pass);
+        return UnPack(RowData);
     };
 
 
