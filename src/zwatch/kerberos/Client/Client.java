@@ -15,7 +15,7 @@ public class Client extends Thread implements IClient {
         try {
             as_proxy.Login("20161001742");
         }catch (IOException e){
-
+            e.printStackTrace();
             return;
         }
         String ticket_as= null;
