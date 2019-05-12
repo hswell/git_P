@@ -3,6 +3,7 @@ package zwatch.kerberos.packet;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import zwatch.kerberos.Utils;
 import zwatch.kerberos.crypt.DES;
 
 import javax.crypto.BadPaddingException;
@@ -26,73 +27,41 @@ import java.util.logging.Logger;
 
 
 public class AS2Client {
-
-    private static Logger logger=Logger.getLogger("Pack.log");
-    public String Uid="";
-    public String TGSid="";
-    public String TimeStamp = simpleFormatter.format(new Date());
-    public String LifeTime = simpleFormatter.format(new Date());
-    public String Kc_tgs = "";
-    public String RowTicketTgs="";
+    private static Logger logger = Logger.getLogger("pack.log");
 
 
-    private static SimpleDateFormat simpleFormatter
-            =new SimpleDateFormat("yyyy-MM-dd hh:mm:ss:SSS");
-    private static Gson gson=new Gson();
+    //E(Kc,[Kc,tgs|| IDtgs|| TS2|| Lifetime2|| Tickettgs])
+    public byte[] Kc_tgs, IDtgs;
+    public byte[] Ticket_tgs;
+    public long TS2, Lifetime2;
 
-    public String CryptPack(String pass){
-        String data=pack();
-        byte[] CryptData= new byte[0];
-        try {
-            CryptData = DES.decrypt(data.getBytes() ,pass);
-        } catch (NoSuchPaddingException | NoSuchAlgorithmException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException | InvalidKeySpecException e) {
-            e.printStackTrace();
-        }
-        StringWriter stringBuffer=new StringWriter();
-        JsonWriter jsonWriter=new JsonWriter(stringBuffer);
-        try {
-            jsonWriter.beginObject()
-                    .name("data").value(new String(Base64.getEncoder().encode(CryptData)))
-                    .endObject();
-            System.out.println(CryptData.length);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return stringBuffer.toString();
+    public AS2Client(byte[] Kc_tgs, byte[] IDtgs, byte[] Ticket_tgs, long TS2, long Lifetime2) {
+        this.Kc_tgs = Kc_tgs;
+        this.IDtgs = IDtgs;
+        this.TS2 = TS2;
+        this.Lifetime2 = Lifetime2;
+        this.Ticket_tgs = Ticket_tgs;
+    }
+    public AS2Client(byte[] Kc_tgs, byte[] IDtgs, byte[] Ticket_tgs, long TS2){
+        this(Kc_tgs, IDtgs, Ticket_tgs, TS2, Utils.Default_Lifetime);
+    }
 
+    public String cryptPack(String pass) throws Exception {
+        String ret1=pack();
+        return Utils.encrypt_des(ret1, pass);
     };
 
     public String pack(){
-        Gson gson=new Gson();
-        return gson.toJson(this, AS2Client.class);
+        return Utils.gson.toJson(this, AS2Client.class);
     };
 
-    public static AS2Client unpack(String rowData, String pass){
-        JsonReader reader=new JsonReader(new StringReader(rowData));
-        try {
-            reader.beginObject();
-            if(reader.nextName().equals("data")){
-                byte[] DcryptData= new byte[0];
-                try {
-                    String rowD=reader.nextString();
-                    DcryptData = DES.decrypt(Base64.getDecoder().decode(rowD.getBytes()) ,pass, false);
-                    String str= new String(DcryptData);
-                    reader=new JsonReader(new StringReader(str));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }else{
-                System.out.println("Error");
-            }
-            return gson.fromJson(reader, AS2Client.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public static AS2Client unPack(String rowData){
+        return Utils.gson.fromJson(rowData, AS2Client.class);
     };
 
-    public static AS2Client FromReader(Reader reader, String pass) throws IOException {
-        return unpack(packetTool.FromReader(reader), pass);
-    };
+    public static AS2Client unCryptPack(String rowData, String pass) throws Exception {
+        rowData=Utils.decrypt_des(rowData, pass);
+        return unPack(rowData);
+    }
 
 }

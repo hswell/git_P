@@ -6,6 +6,7 @@ import java.io.StringWriter;
 
 public class testAs2Client {
     public static void main(String argv[]){
+        /*
         String password="20161001";
         AS2Client as2Client=new AS2Client();
         as2Client.Uid="helloIamLiHua";
@@ -15,5 +16,6 @@ public class testAs2Client {
         System.out.println(packet);
         AS2Client as2Client1=AS2Client.unpack(packet, password);
         System.out.println(as2Client1.pack());
+        */
     }
 }
