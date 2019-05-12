@@ -31,7 +31,7 @@ public class TGS2Client {
         this(Kc_v, IDv, Ticket_v, TS4, Utils.Default_Lifetime);
     }
 
-    public String cryptPack(String pass) throws Exception {
+    public String cryptPack(byte[] pass) throws Exception {
         return Utils.encrypt_des(pack(), pass);
     }
 
@@ -43,7 +43,7 @@ public class TGS2Client {
         return Utils.gson.fromJson(rowData, TGS2Client.class);
     }
 
-    public static TGS2Client UnCryptPack(String rowData, String Kc_tgs) throws Exception {
+    public static TGS2Client UnCryptPack(String rowData, byte[] Kc_tgs) throws Exception {
         String row=Utils.decrypt_des(rowData, Kc_tgs);
         return UnPack(row);
     }

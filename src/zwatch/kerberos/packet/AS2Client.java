@@ -46,7 +46,7 @@ public class AS2Client {
         this(Kc_tgs, IDtgs, Ticket_tgs, TS2, Utils.Default_Lifetime);
     }
 
-    public String cryptPack(String pass) throws Exception {
+    public String cryptPack(byte[] pass) throws Exception {
         String ret1=pack();
         return Utils.encrypt_des(ret1, pass);
     };
@@ -59,7 +59,7 @@ public class AS2Client {
         return Utils.gson.fromJson(rowData, AS2Client.class);
     };
 
-    public static AS2Client unCryptPack(String rowData, String pass) throws Exception {
+    public static AS2Client unCryptPack(String rowData, byte[] pass) throws Exception {
         rowData=Utils.decrypt_des(rowData, pass);
         return unPack(rowData);
     }

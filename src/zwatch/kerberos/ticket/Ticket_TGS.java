@@ -9,10 +9,10 @@ public class Ticket_TGS {
     //byte[] IDc, ADc,IDtgs;
     public byte[] IDc=null , ADc=null ,IDtgs=null ;
     public long TS2, Lifetime2;
-    public String Kc_tgs;
+    public byte[] Kc_tgs;
 
 
-    public Ticket_TGS(byte[] IDc, byte[] ADc, byte[] IDtgs, String Kc_tgs,long TS2, long Lifetime2){
+    public Ticket_TGS(byte[] IDc, byte[] ADc, byte[] IDtgs, byte[] Kc_tgs,long TS2, long Lifetime2){
         this.IDc = IDc;
         this.ADc = ADc;
         this.IDtgs = IDtgs;
@@ -21,14 +21,14 @@ public class Ticket_TGS {
         this.Lifetime2=Lifetime2;
     }
 
-    public Ticket_TGS(byte[] IDc, byte[] ADc, byte[] IDtgs, String Kc_tgs,long TS2){
+    public Ticket_TGS(byte[] IDc, byte[] ADc, byte[] IDtgs, byte[] Kc_tgs,long TS2){
         this(IDc, ADc, IDtgs, Kc_tgs, TS2, Utils.Default_Lifetime);
     }
 
     public String pack(){
         return Utils.gson.toJson(this, Ticket_TGS.class);
     }
-    public String cryptPack(String pass) throws Exception {
+    public String cryptPack(byte[] pass) throws Exception {
         String ret=pack();
         ret= Utils.encrypt_des(ret, pass);
         return ret;
@@ -38,8 +38,9 @@ public class Ticket_TGS {
         return Utils.gson.fromJson(rowData, Ticket_TGS.class);
     }
 
-    public static Ticket_TGS UnCryptPack(String rowData, String pass) throws Exception {
-        return UnPack(Utils.decrypt_des(rowData, pass));
+    public static Ticket_TGS UnCryptPack(String rowData, byte[] pass) throws Exception {
+        String ret=Utils.decrypt_des(rowData, pass);
+        return UnPack(ret);
     }
 }
 

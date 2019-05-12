@@ -26,7 +26,7 @@ public class Ticket_V {
         return Utils.gson.toJson(this, Ticket_V.class);
     };
 
-    public String CryptPack(String KV) throws Exception {
+    public String CryptPack(byte[] KV) throws Exception {
         String ret=Pack();
         return Utils.encrypt_des(ret, KV);
     };
@@ -35,7 +35,7 @@ public class Ticket_V {
         return Utils.gson.fromJson(RowData, Ticket_V.class);
     };
 
-    public Ticket_V UnCryptPack(String RowData, String pass) throws Exception {
+    public Ticket_V UnCryptPack(String RowData, byte[] pass) throws Exception {
         RowData=Utils.decrypt_des(RowData, pass);
         return UnPack(RowData);
     };
