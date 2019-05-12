@@ -26,7 +26,7 @@ public class Utils {
     public static Base64.Decoder base64de=Base64.getDecoder();
     public static Base64.Encoder base64en=Base64.getEncoder();
 
-    public static String encrypt_des(String data, String k) throws Exception {
+    public static String encrypt_des(String data, byte[] k) throws Exception {
         //TODO
         byte[] ret= new byte[0];
         try {
@@ -38,7 +38,7 @@ public class Utils {
         return base64en.encodeToString(ret);
     }
 
-    public static String decrypt_des(String data, String k) throws Exception {
+    public static String decrypt_des(String data, byte[] k) throws Exception {
         //TODO
         byte[] ret= base64de.decode(data);
         try {

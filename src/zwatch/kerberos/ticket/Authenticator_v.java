@@ -12,7 +12,7 @@ public class Authenticator_v {
         this.TS5=TS5;
     }
 
-    public  static Authenticator_v UnCryptPack(String row, String key) throws Exception {
+    public  static Authenticator_v UnCryptPack(String row, byte[] key) throws Exception {
         //TODO wait DES
         String ret=Utils.decrypt_des(row ,key);
         return unPack(ret);
@@ -26,7 +26,7 @@ public class Authenticator_v {
         return Utils.gson.toJson(this, Authenticator_v.class);
     };
 
-    public String cryptPack(String pass) throws Exception {
+    public String cryptPack(byte[] pass) throws Exception {
         String ret=pack();
         ret=Utils.encrypt_des(ret ,pass);
         return ret;
