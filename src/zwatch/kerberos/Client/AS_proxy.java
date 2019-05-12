@@ -17,7 +17,7 @@ public class AS_proxy implements IServerConfig {
     String rowData=null;
     String RowTicket=null;
     Socket client = null;
-    AS2Client as2Client=null;
+    public AS2Client as2Client=null;
     Client2AS client2AS=null;
 
     static String host = "127.0.0.1";
@@ -33,7 +33,7 @@ public class AS_proxy implements IServerConfig {
         }
     }
 
-    public void Login(String uid) {
+    public void Login(String uid) throws IOException {
         logger.log(Level.INFO , uid+" will login.");
 
         if(client == null){
@@ -45,7 +45,7 @@ public class AS_proxy implements IServerConfig {
         byte[] IDtgs="01".getBytes();
         client2AS=new Client2AS(IDc,IDtgs, Utils.TimeStamp());
 
-        try {
+
             assert client != null;
             writer = new OutputStreamWriter(client.getOutputStream());
             Reader reader=new InputStreamReader(client.getInputStream());
@@ -62,10 +62,6 @@ public class AS_proxy implements IServerConfig {
             reader.close();
             writer.close();
             client.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
     public String getRowTicket(String pass) throws Exception {
@@ -76,7 +72,7 @@ public class AS_proxy implements IServerConfig {
                 as2Client=AS2Client.unCryptPack(rowData,"20161001");
                 logger.log(Level.INFO, as2Client.pack());
                 System.out.println("完整包："+rowData);
-                System.out.println("Tgs id"+as2Client.IDtgs);
+                System.out.println("Tgs_id: "+new String(as2Client.IDtgs));
                 System.out.println("返回的时间戳"+as2Client.TS2);
             }
             RowTicket = new String(as2Client.Ticket_tgs);

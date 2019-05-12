@@ -20,7 +20,7 @@ import java.util.Base64;
 import static java.lang.System.*;
 
 public class Utils {
-    public static long Default_Lifetime=60000;
+    public static long Default_Lifetime=600000000;
 
     public static Gson gson=new Gson();
     public static Base64.Decoder base64de=Base64.getDecoder();
@@ -61,14 +61,15 @@ public class Utils {
         StringBuilder builder = new StringBuilder();
         boolean DataEoF=false;
         int len=0;
-        char[] chars=new char[1024];
+        int MAX_BUFFER_SIZE=4096;
+        char[] chars=new char[MAX_BUFFER_SIZE];
         while (!DataEoF) {
             len = reader.read(chars);
             if ( len <= 0){
                 DataEoF=true;
                 break;
             }
-            if(chars[len-1]=='}'){
+            if(len<MAX_BUFFER_SIZE){
                 DataEoF = true;
             }
             builder.append(new String(chars, 0, len));
@@ -91,7 +92,4 @@ public class Utils {
         }
         return ret;
     }
-
-
-
 }
