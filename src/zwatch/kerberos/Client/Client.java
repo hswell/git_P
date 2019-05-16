@@ -12,7 +12,7 @@ public class Client extends Thread implements IClient {
         System.out.println("-----------客户端启动-----------");
         AS_proxy as_proxy= new AS_proxy();
         as_proxy.run();
-        try {
+        try {//验证
             as_proxy.Login("20161001742");
         }catch (IOException e){
 
@@ -24,12 +24,12 @@ public class Client extends Thread implements IClient {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        ;
+        
         TGS_proxy tgs_proxy=new TGS_proxy();
         tgs_proxy.Login(as_proxy.as2Client);
         String ticket_tgs= tgs_proxy.getRowTicket("20161001");
 
-        //TODO 登录v服务器
+        //TODO 登录 v服务器
 
     }
 
