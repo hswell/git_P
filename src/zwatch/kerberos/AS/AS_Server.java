@@ -90,7 +90,7 @@ class AS_Server_n extends Thread implements IServerConfig {
 
                 logger.log(Level.INFO , "the user: "+user+" request ticket");
                 long TS=Utils.TimeStamp();
-                byte[] ADc= socket.getInetAddress().toString().getBytes();;
+                String ADc= Utils.GetAddressOnlyIP(socket);
                 byte[] Kc_tgs=Utils.RandomDesKey();
                 Ticket_TGS ticket_tgs=new Ticket_TGS(cAs.IDc, ADc, cAs.IDtgs, Kc_tgs, TS);
                 AS2Client as2Client=new AS2Client(Kc_tgs, cAs.IDtgs, ticket_tgs.cryptPack(tgs_password.getBytes()).getBytes() ,TS);

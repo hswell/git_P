@@ -7,12 +7,11 @@ import javax.rmi.CORBA.Util;
 //Tickettgs= E(Ktgs, [Kc,tgs|| IDC|| ADC|| IDtgs|| TS2|| Lifetime2])
 public class Ticket_TGS {
     //byte[] IDc, ADc,IDtgs;
-    public byte[] IDc=null , ADc=null ,IDtgs=null ;
+    public String IDc=null , ADc=null ,IDtgs=null ;
     public long TS2, Lifetime2;
     public byte[] Kc_tgs;
 
-
-    public Ticket_TGS(byte[] IDc, byte[] ADc, byte[] IDtgs, byte[] Kc_tgs,long TS2, long Lifetime2){
+    public Ticket_TGS(String IDc, String ADc, String IDtgs, byte[] Kc_tgs,long TS2, long Lifetime2){
         this.IDc = IDc;
         this.ADc = ADc;
         this.IDtgs = IDtgs;
@@ -21,7 +20,7 @@ public class Ticket_TGS {
         this.Lifetime2=Lifetime2;
     }
 
-    public Ticket_TGS(byte[] IDc, byte[] ADc, byte[] IDtgs, byte[] Kc_tgs,long TS2){
+    public Ticket_TGS(String IDc, String ADc, String IDtgs, byte[] Kc_tgs,long TS2){
         this(IDc, ADc, IDtgs, Kc_tgs, TS2, Utils.Default_Lifetime);
     }
 

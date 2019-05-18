@@ -95,8 +95,8 @@ class TGS_Server_n extends Thread implements ITGS_Server{
             if(Verification(ticket_tgs, auth)){
                 byte[] Kc_v=Utils.RandomDesKey();
                 long TS=Utils.TimeStamp();
-                byte[] ADc= socket.getInetAddress().toString().getBytes();;
-                Ticket_V ticket_v = new Ticket_V(Kc_v, ticket_tgs.IDc,ADc ,cTGS.IDv,TS);
+                String ADc= Utils.GetAddressOnlyIP(socket);
+                Ticket_V ticket_v = new Ticket_V(Kc_v, ticket_tgs.IDc, ADc, cTGS.IDv, TS);
                 TGS2Client tgs2Client = new TGS2Client(Kc_v, cTGS.IDv, ticket_v.CryptPack(v_password.getBytes()),TS);
                 String sendPack=tgs2Client.cryptPack(ticket_tgs.Kc_tgs);
                 writer.write(sendPack);

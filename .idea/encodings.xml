@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" addBOMForNewFiles="with NO BOM">
+    <file url="file://$PROJECT_DIR$/src" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/zx/client/FSClient.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/zx/data/FSMessage.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/zx/data/FileData.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/zx/server/FSServer.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/zx/tools/DateDeal.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/zx/tools/DirectoryChoose.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/zx/tools/DownSpeed.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/zx/tools/FileIconExtractor.java" charset="GBK" />
+  </component>
+</project>
