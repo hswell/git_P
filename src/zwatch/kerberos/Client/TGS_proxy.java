@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 public class TGS_proxy implements IServerConfig {
         Socket client;
         String rowData=null;
-        String Kc_tgs;
+        byte[] Kc_tgs;
         public TGS2Client tgs2Client=null;
         static String host = "127.0.0.1";
         static int port = 9998;
@@ -46,7 +46,7 @@ public class TGS_proxy implements IServerConfig {
         byte[] IDc="20161001742".getBytes();
         long TS5=Utils.TimeStamp();
         String ticket=new String(as2Client.Ticket_tgs);
-        Kc_tgs=new String(as2Client.Kc_tgs);
+        Kc_tgs=as2Client.Kc_tgs;
         byte[] ADc=client.getLocalAddress().toString().getBytes();
         Authenticator_tgs authenticator_tgs=new Authenticator_tgs(IDc, ADc, TS5);
         try {

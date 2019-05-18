@@ -69,7 +69,7 @@ public class AS_proxy implements IServerConfig {
             return RowTicket;
         }else{
             if(as2Client == null){
-                as2Client=AS2Client.unCryptPack(rowData,"20161001");
+                as2Client=AS2Client.unCryptPack(rowData,"20161001".getBytes());
                 logger.log(Level.INFO, as2Client.pack());
                 System.out.println("完整包："+rowData);
                 System.out.println("Tgs_id: "+new String(as2Client.IDtgs));

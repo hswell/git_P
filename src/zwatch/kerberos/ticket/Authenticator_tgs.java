@@ -16,7 +16,7 @@ public class Authenticator_tgs {
         this.TS3=TS3;
     }
 
-    public String CryptPack(String pass) throws Exception {
+    public String CryptPack(byte[] pass) throws Exception {
         String ret = pack();
         return Utils.encrypt_des(ret, pass);
     };
@@ -25,7 +25,7 @@ public class Authenticator_tgs {
         return Utils.gson.fromJson(rowData, Authenticator_tgs.class);
     }
 
-    public static Authenticator_tgs unCryptPack(String rowData, String Kc_tgs) throws Exception {
+    public static Authenticator_tgs unCryptPack(String rowData, byte[] Kc_tgs) throws Exception {
         rowData=Utils.decrypt_des(rowData, Kc_tgs);
         return UnPack(rowData);
     };
