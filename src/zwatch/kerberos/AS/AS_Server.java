@@ -73,6 +73,7 @@ class AS_Server_n extends Thread implements IServerConfig {
     Socket socket = null;
     private static Logger logger=Logger.getLogger("AS_Server_n.log");
     private static String password="20161001";
+    private static String tgs_password="20161001";
     @Override
     public void run() {
         Reader reader = null;
@@ -89,16 +90,17 @@ class AS_Server_n extends Thread implements IServerConfig {
 
                 logger.log(Level.INFO , "the user: "+user+" request ticket");
                 long TS=Utils.TimeStamp();
-                byte[] ADc= socket.getInetAddress().toString().getBytes();;
+                String ADc= Utils.GetAddressOnlyIP(socket);
                 byte[] Kc_tgs=Utils.RandomDesKey();
-                Ticket_TGS ticket_tgs=new Ticket_TGS(cAs.IDc, ADc, cAs.IDtgs, TS);
-                AS2Client as2Client=new AS2Client(Kc_tgs, cAs.IDtgs, ticket_tgs.cryptPack().getBytes() ,TS);
-                String sendPack=as2Client.cryptPack(pass);
+                Ticket_TGS ticket_tgs=new Ticket_TGS(cAs.IDc, ADc, cAs.IDtgs, Kc_tgs, TS);
+                AS2Client as2Client=new AS2Client(Kc_tgs, cAs.IDtgs, ticket_tgs.cryptPack(tgs_password.getBytes()).getBytes() ,TS);
+                String sendPack=as2Client.cryptPack(pass.getBytes());
                 writer.write(sendPack);
                 writer.flush();
 
             }else{
-                logger.log(Level.INFO , "the user: "+user+" can't found");
+                String Client= socket.getInetAddress().toString();
+                logger.log(Level.INFO , "the user: "+user+" from: "+Client+" can't found。");
             }
 
             reader.close();

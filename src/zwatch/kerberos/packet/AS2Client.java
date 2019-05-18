@@ -28,25 +28,28 @@ import java.util.logging.Logger;
 
 public class AS2Client {
     private static Logger logger = Logger.getLogger("pack.log");
-
-
     //E(Kc,[Kc,tgs|| IDtgs|| TS2|| Lifetime2|| Tickettgs])
-    public byte[] Kc_tgs, IDtgs;
-    public byte[] Ticket_tgs;
+    //Kc_tgs=base64(byte[7])
+    //IDtgs=（byte[], "ASCII"）
+
+    public byte[]  Kc_tgs;
+    public String  IDtgs;
+    //Ticket_tgs=base64(des(Ticket_TGS))
+    public String Ticket_tgs;
     public long TS2, Lifetime2;
 
-    public AS2Client(byte[] Kc_tgs, byte[] IDtgs, byte[] Ticket_tgs, long TS2, long Lifetime2) {
+    public AS2Client(byte[] Kc_tgs, String IDtgs, byte[] Ticket_tgs, long TS2, long Lifetime2) {
         this.Kc_tgs = Kc_tgs;
         this.IDtgs = IDtgs;
         this.TS2 = TS2;
         this.Lifetime2 = Lifetime2;
-        this.Ticket_tgs = Ticket_tgs;
+        this.Ticket_tgs = new String(Ticket_tgs, Utils.ascii_chset);
     }
-    public AS2Client(byte[] Kc_tgs, byte[] IDtgs, byte[] Ticket_tgs, long TS2){
+    public AS2Client(byte[] Kc_tgs, String IDtgs, byte[] Ticket_tgs, long TS2){
         this(Kc_tgs, IDtgs, Ticket_tgs, TS2, Utils.Default_Lifetime);
     }
 
-    public String cryptPack(String pass) throws Exception {
+    public String cryptPack(byte[] pass) throws Exception {
         String ret1=pack();
         return Utils.encrypt_des(ret1, pass);
     };
@@ -59,7 +62,7 @@ public class AS2Client {
         return Utils.gson.fromJson(rowData, AS2Client.class);
     };
 
-    public static AS2Client unCryptPack(String rowData, String pass) throws Exception {
+    public static AS2Client unCryptPack(String rowData, byte[] pass) throws Exception {
         rowData=Utils.decrypt_des(rowData, pass);
         return unPack(rowData);
     }

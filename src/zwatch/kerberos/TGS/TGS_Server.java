@@ -90,14 +90,14 @@ class TGS_Server_n extends Thread implements ITGS_Server{
             logger.log(Level.INFO , "server recv rowdata: " + C_TGS_RowData);
             Client2TGS cTGS = Client2TGS.unPack(C_TGS_RowData);
 
-            Ticket_TGS ticket_tgs=Ticket_TGS.UnCryptPack(cTGS.Ticket_tgs, password);
+            Ticket_TGS ticket_tgs=Ticket_TGS.UnCryptPack(cTGS.Ticket_tgs, password.getBytes());
             Authenticator_tgs auth=Authenticator_tgs.unCryptPack(cTGS.Authenticator_tgs, ticket_tgs.Kc_tgs);
             if(Verification(ticket_tgs, auth)){
                 byte[] Kc_v=Utils.RandomDesKey();
                 long TS=Utils.TimeStamp();
-                byte[] ADc= socket.getInetAddress().toString().getBytes();;
-                Ticket_V ticket_v = new Ticket_V(Kc_v, ticket_tgs.IDc,ADc ,cTGS.IDv,TS);
-                TGS2Client tgs2Client = new TGS2Client(Kc_v, cTGS.IDv, ticket_v.CryptPack(v_password),TS);
+                String ADc= Utils.GetAddressOnlyIP(socket);
+                Ticket_V ticket_v = new Ticket_V(Kc_v, ticket_tgs.IDc, ADc, cTGS.IDv, TS);
+                TGS2Client tgs2Client = new TGS2Client(Kc_v, cTGS.IDv, ticket_v.CryptPack(v_password.getBytes()),TS);
                 String sendPack=tgs2Client.cryptPack(ticket_tgs.Kc_tgs);
                 writer.write(sendPack);
                 writer.flush();
