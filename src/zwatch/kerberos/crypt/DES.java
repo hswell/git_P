@@ -16,7 +16,7 @@ public class DES {
 
     public static void init() throws NoSuchAlgorithmException, NoSuchPaddingException {
         keyFactory = SecretKeyFactory.getInstance("DES");
-        cipher = Cipher.getInstance("DES");
+        cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
     }
     public static byte[] decrypt(byte[] src, byte[] password) throws InvalidKeyException, InvalidKeySpecException, BadPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, NoSuchPaddingException {
         return decrypt(src, password, true);

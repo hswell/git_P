@@ -16,18 +16,19 @@ import java.util.Date;
 
 public class TGS2Client {
     //E(Kc_tgs, [Kc_v || IDV || TS4 || Lifetime3|| Ticketv])
-    public byte[] Kc_v, IDv;
+    public byte[] Kc_v;
+    public String IDv;
     public String Ticket_v;
     public long TS4, Lifetime3;
 
-    public TGS2Client(byte[] Kc_v, byte[] IDv, String Ticket_v, long TS4, long Lifetime3){
+    public TGS2Client(byte[] Kc_v, String IDv, String Ticket_v, long TS4, long Lifetime3){
         this.Kc_v=Kc_v;
         this.IDv=IDv;
         this.Ticket_v=Ticket_v;
         this.TS4=TS4;
         this.Lifetime3=Lifetime3;
     }
-    public TGS2Client(byte[] Kc_v, byte[] IDv, String Ticket_v, long TS4){
+    public TGS2Client(byte[] Kc_v, String IDv, String Ticket_v, long TS4){
         this(Kc_v, IDv, Ticket_v, TS4, Utils.Default_Lifetime);
     }
 

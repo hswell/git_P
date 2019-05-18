@@ -10,9 +10,11 @@ import zwatch.kerberos.packet.Client2TGS;
 import zwatch.kerberos.packet.TGS2Client;
 import zwatch.kerberos.ticket.Authenticator_tgs;
 import zwatch.kerberos.ticket.Authenticator_v;
+import zwatch.kerberos.ticket.Ticket_V;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,6 +26,7 @@ public class TGS_proxy implements IServerConfig {
         static String host = "127.0.0.1";
         static int port = 9998;
         static Logger logger=Logger.getLogger("TgsServer.log");
+        String Ticket_v=null;
 
     public void run() {
         LoadConfig("TGS_proxy.config");
@@ -50,7 +53,9 @@ public class TGS_proxy implements IServerConfig {
         byte[] ADc=client.getLocalAddress().toString().getBytes();
         Authenticator_tgs authenticator_tgs=new Authenticator_tgs(IDc, ADc, TS5);
         try {
-            Client2TGS client2TGS=new Client2TGS(IDv,ticket,authenticator_tgs.CryptPack(Kc_tgs));
+            Client2TGS client2TGS=new Client2TGS(IDv,ticket, authenticator_tgs.CryptPack(Kc_tgs));
+            System.out.println("the client Kc_tgs is "+ Arrays.toString(Kc_tgs));
+
             assert client != null;
             writer = new OutputStreamWriter(client.getOutputStream());
             reader = new InputStreamReader(client.getInputStream());
@@ -73,11 +78,13 @@ public class TGS_proxy implements IServerConfig {
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
-    public String getRowTicket(String pass) {
-        return null;
+    public String getRowTicket(byte[] pass) {
+        if(Ticket_v==null){
+            Ticket_v=tgs2Client.Ticket_v;
+        }
+        return Ticket_v;
     }
 
     @Override

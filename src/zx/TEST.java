@@ -65,9 +65,9 @@ public void actionPerformed(ActionEvent e) {
 String name = txtzhujiip.getText();
 String pass = txtyuanip.getText();
 if(name.equals("tom")&&pass.equals("123")){
-System.out.println("µÇÂ½³É¹¦");
+System.out.println("³É¹¦");
 }else{
-System.out.println("µÇÂ¼Ê§°Ü");
+System.out.println("Ê§°Ü");
 }
 }
 

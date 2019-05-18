@@ -35,7 +35,6 @@ public class AS_proxy implements IServerConfig {
 
     public void Login(String uid) throws IOException {
         logger.log(Level.INFO , uid+" will login.");
-
         if(client == null){
             run();
         }

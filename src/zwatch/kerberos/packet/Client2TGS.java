@@ -11,12 +11,12 @@ import java.io.StringReader;
 
 public class Client2TGS {
     //IDV|| Tickettgs|| Authenticatorc
-    public byte[] IDv;
+    public String IDv;
     public String Ticket_tgs;
     public String Authenticator_tgs;
 
     public Client2TGS(byte[] IDv, String Ticket_tgs, String Authenticator_tgs){
-        this.IDv=IDv;
+        this.IDv=new String(IDv, Utils.ascii_chset);
         this.Ticket_tgs=Ticket_tgs;
         this.Authenticator_tgs=Authenticator_tgs;
     }
